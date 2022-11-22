@@ -1,0 +1,107 @@
+.movie {
+    background-color: #2F2F2F;
+    padding: 0;
+    max-width: 1140px;
+    height: 134px;
+}
+
+.movie__container{
+    display: grid;
+    grid-template-areas:
+    "A A A A   D D D D"
+    "B B B B   D D D D"
+    "C C C C   D D D D";
+}
+
+.movie__title {
+    grid-area: A;
+    max-width: 400px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin: 22px 0 13px 22px;
+}
+
+.movie__duration {
+    grid-area: B;
+    margin: 0 0 30px 22px;
+    color: #8B8B8B;
+    font-size: 11px;
+    line-height: 13px;
+}
+
+.movie__button {
+    grid-area: C;
+    margin: 0 0 22px 22px;
+    width: 14px;
+    height: 12px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.movie__button:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in;
+}
+
+.movie__button_active {
+    background: url(../../../images/liked.svg);
+}
+
+.movie__button_inactive {
+    background: url(../../../images/addLike.svg);
+}
+
+.movie__delete-button {
+    width: 14px;
+    height: 12px;
+    background: url(../../../images/removeLike.svg);
+}
+
+.movie__img {
+    grid-area: D;
+    justify-self: end;
+    margin: 6px 6px 6px 0;
+    width: 220px;
+    height: 122px;
+}
+
+@media screen and (max-width: 450px) {
+
+    .movie {
+        max-width: 300px;
+        height: 232px;
+        justify-self: center;
+    }
+
+    .movie__container {
+        grid-template-areas:
+    "D D D D   D D D D"
+    "A A A A   C C C C"
+    "B B B B   C C C C";
+    }
+
+    .movie__title {
+        width: 228px;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+        margin: 14px 30px 8px 12px;
+    }
+
+    .movie__duration {
+        margin: 0 0 14px 12px;
+    }
+
+    .movie__button {
+        margin: 16px 16px 36px 0;
+    }
+
+    .movie__img {
+        width: 300px;
+        height: 168px;
+        margin: 0;
+    }
+}

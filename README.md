@@ -7,3 +7,4 @@
 Ссылка на пул реквест level-3:
 
 `https://github.com/Maru-Aruko/movies-explorer-frontend/pull/2`
+

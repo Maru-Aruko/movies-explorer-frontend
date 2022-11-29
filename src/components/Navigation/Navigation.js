@@ -2,7 +2,7 @@ import React from "react";
 import menu from "../../images/burger.svg";
 import {NavLink} from "react-router-dom";
 
-function Navigation({ onMenuClick }) {
+function Navigation({onMenuClick}) {
     return (
         <>
             <nav className="navigation">

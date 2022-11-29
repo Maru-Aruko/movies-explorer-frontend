@@ -1,15 +1,17 @@
 import React from "react";
 
-import likedMovies from '../../../utils/movieLikedList'
-
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function SavedMovies() {
+function SavedMovies( {savedMovies, deleteMovie, likedMovies, handleSearch} ) {
+
     return (
         <section className="saved-movies">
-            <SearchForm />
-            <MoviesCardList movies={likedMovies} moreButton={false} />
+            <SearchForm handleSearchMovies={handleSearch}
+                        saveCheckboxState={JSON.parse(localStorage.getItem('saveLikeCheckboxState')) || false}
+                        saveFilmsInputInfo={localStorage.getItem('saveLikeFilmsInputInfo')}
+            />
+            <MoviesCardList movies={likedMovies} savedMovies={savedMovies} deleteMovie={deleteMovie}  />
         </section>
     )
 }

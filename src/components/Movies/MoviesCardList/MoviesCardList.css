@@ -28,6 +28,17 @@
     transition: opacity 0.3s ease-in;
 }
 
+.movies__not-found {
+    display: block;
+    text-align: center;
+    font-weight: 400;
+    font-size: 25px;
+    color: #FF004C;
+    margin: 0;
+    line-height: 16px;
+}
+
+
 @media screen and (max-width: 800px) {
 
     .movies-cards__container {

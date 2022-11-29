@@ -10,11 +10,11 @@ function Main() {
     return (
         <>
             <main>
-                <Promo />
-                <AboutProject />
-                <Techs />
-                <AboutMe />
-                <Portfolio />
+                <Promo/>
+                <AboutProject/>
+                <Techs/>
+                <AboutMe/>
+                <Portfolio/>
             </main>
         </>
 

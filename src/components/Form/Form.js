@@ -3,9 +3,22 @@ import {Link, useLocation} from 'react-router-dom';
 
 import logo from '../../images/logo.svg';
 
-function Form({title, buttonText, question, path, link, children}) {
+function Form({
+                  title,
+                  buttonText,
+                  question,
+                  path,
+                  link,
+                  handleSubmit,
+                  checkValidity,
+                  errorText,
+                  isError,
+                  resetErrorText,
+                  children
+              }) {
 
     const location = useLocation()
+
 
     return (
         <section className="form">
@@ -14,17 +27,18 @@ function Form({title, buttonText, question, path, link, children}) {
                     <img className="header__logo" src={logo} alt="Логотип «Movies»"/>
                 </Link>
                 <h2 className="form__title">{title}</h2>
-                <form className="form__labels">
+                <form onSubmit={handleSubmit} className="form__labels">
                     {children}
-                </form>
-                <div className={`form__buttons ${location.pathname === "/signin" && "form__buttons-login"}`}>
-                    <button type="submit" className="form__button" disabled>
-                        {buttonText}
-                    </button>
-                    <span className="form__question"> {question}
-                        <Link to={path} className="form__link"> {link} </Link>
+                    <div className={`form__buttons ${location.pathname === "/signin" && "form__buttons-login"}`}>
+                        <span className="error">{isError ? errorText : ""}</span>
+                        <button type="submit" disabled={checkValidity} className="form__button">
+                            {buttonText}
+                        </button>
+                        <span className="form__question"> {question}
+                            <Link to={path} onClick={resetErrorText} className="form__link"> {link} </Link>
                     </span>
-                </div>
+                    </div>
+                </form>
             </div>
         </section>
     );

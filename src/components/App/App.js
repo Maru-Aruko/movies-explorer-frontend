@@ -102,10 +102,6 @@ function App() {
         searchMovie(inputValue, shortFilmCheckbox)
     }
 
-    // React.useEffect(() => {
-    //     setLikedMovies(saveMovies)
-    // }, [loggedIn])
-
     function handleLikedMoviesSearch(inputValue, shortFilmCheckbox) {
         const searchedMovies = savedMovies.filter((movie) => movie.nameRU.toLowerCase().includes(inputValue.toLowerCase()))
         const foundedLikedMovies = shortFilmCheckbox ? searchedMovies.filter((item) => item.duration <= SHORT_FILM_DURATION) : searchedMovies

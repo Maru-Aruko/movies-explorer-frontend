@@ -6,13 +6,7 @@ import {useFormWithValidation} from "../Validation/Validation";
 function Login({onLogin, isError, errorText, resetErrorText}) {
     const currentUser = React.useContext(CurrentUserContext);
 
-    const {resetForm, isValid, errors, values, handleChange, setIsValid} = useFormWithValidation();
-
-    React.useEffect(() => {
-        if (currentUser) {
-            resetForm(currentUser, {}, true);
-        }
-    }, [currentUser, resetForm]);
+    const { isValid, errors, values, handleChange, setIsValid} = useFormWithValidation();
 
     const checkValidity = (!isValid);
 

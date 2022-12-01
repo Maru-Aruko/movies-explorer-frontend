@@ -33,3 +33,15 @@ export const deleteMoviesError = 'Во время удаления фильма 
 
 export const validationEmailErrorMessage = 'Некорректый адрес почты';
 export const registerUserSuccessful = 'Вы успешно зарегистрировались!';
+
+
+export const SHORT_FILM_DURATION = 40;
+
+export const WINDOW_WITCH_480 = 480;
+
+export const MOVIES_CARD_BEFORE_480 = 5;
+export const NEW_MOVIES_CARD_BEFORE_480 = 2;
+
+export const MOVIES_CARD_AFTER_480 = 7;
+export const NEW_MOVIES_CARD_AFTER_480 = 7;
+

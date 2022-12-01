@@ -32,12 +32,12 @@ function MoviesCard({movie, liked, likeMovie, deleteMovie, savedMovies}) {
                             className={`movie__button movie__button${liked ? '_active' : '_inactive'}`}
                             onClick={handleLikeToggle}/>
                 }
-                <Link to={movie.trailerLink} className="movie__img-link" target="_blank">
+                <a href={movie.trailerLink} className="movie__img-link" target="_blank">
                     <img className="movie__img"
                          src={location.pathname === '/saved-movies' ? `${movie.image}` : `https://api.nomoreparties.co${movie.image.url}`}
                          alt={movie.nameRU}>
                     </img>
-                </Link>
+                </a>
             </div>
         </li>
     );

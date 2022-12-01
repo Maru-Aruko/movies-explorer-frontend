@@ -22,7 +22,7 @@ import {
     emailError, loginError, loginOrPasswordError, moviesError, notFoundError,
     pageNotFoundError,
     registerError,
-    serverError,
+    serverError, SHORT_FILM_DURATION,
     updateProfileError,
     updateSuccessful
 } from "../../utils/constants";
@@ -48,6 +48,8 @@ function App() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isEdited, setIsEdited] = React.useState(false);
     const [errorText, setErrorText] = React.useState("");
+    const [movieErrorText, setMovieErrorText] = React.useState("");
+    const [isMovieError, setIsMovieError] = React.useState(false);
     const [successText, setSuccessText] = React.useState("");
 
     const [savedMovies, setSavedMovies] = React.useState([]);
@@ -55,6 +57,7 @@ function App() {
     const [isLoading, setLoading] = React.useState(false);
 
     const saveMovies = JSON.parse(localStorage.getItem('savedMovies'))
+    const likeMovies = JSON.parse(localStorage.getItem('likedMovies'))
 
     function toggleMenuClick() {
         setIsMenuOpen((!isMenuOpen));
@@ -79,7 +82,7 @@ function App() {
         moviesApi.getMovies()
             .then((movies) => {
                 const searchedMovies = movies.filter((movie) => movie.nameRU.toLowerCase().includes(inputValue.toLowerCase()))
-                const foundedMovies = shortFilmCheckbox ? searchedMovies.filter((item) => item.duration <= 40) : searchedMovies
+                const foundedMovies = shortFilmCheckbox ? searchedMovies.filter((item) => item.duration <= SHORT_FILM_DURATION) : searchedMovies
                 localStorage.setItem('foundedMovies', JSON.stringify(foundedMovies))
                 localStorage.setItem('saveFilmsInputInfo', inputValue)
                 localStorage.setItem('saveCheckboxState', shortFilmCheckbox)
@@ -90,7 +93,7 @@ function App() {
                 setLoading(false)
                 setIsError(true)
                 if (err === "Error: 500") {
-                    setErrorText(moviesError);
+                    setMovieErrorText(moviesError);
                 }
             })
     }
@@ -105,11 +108,12 @@ function App() {
 
     function handleLikedMoviesSearch(inputValue, shortFilmCheckbox) {
         const searchedMovies = savedMovies.filter((movie) => movie.nameRU.toLowerCase().includes(inputValue.toLowerCase()))
-        const foundedMovies = shortFilmCheckbox ? searchedMovies.filter((item) => item.duration <= 40) : searchedMovies
-        setLikedMovies(foundedMovies)
-        localStorage.setItem('likedMovies', JSON.stringify(foundedMovies))
-        localStorage.setItem('saveLikeFilmsInputInfo', inputValue)
-        localStorage.setItem('saveLikeCheckboxState', shortFilmCheckbox)
+        const foundedLikedMovies = shortFilmCheckbox ? searchedMovies.filter((item) => item.duration <= SHORT_FILM_DURATION) : searchedMovies
+        setLikedMovies(foundedLikedMovies)
+        localStorage.setItem('likedMovies', JSON.stringify(foundedLikedMovies))
+       if (likeMovies.length === 0) {
+           setIsMovieError(true)
+       }
     }
 
     function getSavedMovies() {
@@ -151,6 +155,7 @@ function App() {
         mainApi.register(data)
             .then(() => {
                 handleLogin(data)
+
             })
             .catch((err) => {
                 console.log(err);
@@ -176,23 +181,18 @@ function App() {
     }
 
     React.useEffect(() => {
-        if (loggedIn) {
-            history.push('/movies');
-        }
-    }, [loggedIn, history]);
-
-    React.useEffect(() => {
         const token = localStorage.getItem("jwt");
         if (token) {
             checkToken();
         }
-    }, []);
+    }, [checkToken]);
 
     function handleLogin(data) {
         mainApi.authorize(data)
             .then((newData) => {
                 localStorage.setItem('jwt', newData["token"]);
                 checkToken()
+                history.push('/movies')
             })
             .catch((err) => {
                 console.log(err);
@@ -221,12 +221,31 @@ function App() {
                 })
                 .catch(err => console.log(err));
         }
+        else {
+            setLoggedIn(false)
+            localStorage.removeItem("jwt");
+            localStorage.removeItem('foundedMovies')
+            localStorage.removeItem('saveFilmsInputInfo')
+            localStorage.removeItem('saveCheckboxState')
+            localStorage.removeItem('likedMovies')
+            localStorage.removeItem('savedMovies')
+            setLikedMovies([])
+            setSavedMovies([])
+        }
     }
 
     function handleLogout() {
         setLoggedIn(false);
         localStorage.removeItem("jwt");
-        history.push("/signin");
+        localStorage.removeItem('foundedMovies')
+        localStorage.removeItem('saveFilmsInputInfo')
+        localStorage.removeItem('saveCheckboxState')
+        localStorage.removeItem('likedMovies')
+        localStorage.removeItem('savedMovies')
+        setCurrentUser({})
+        setLikedMovies([])
+        setSavedMovies([])
+        history.push("/");
     }
 
     function getUserInfo() {
@@ -300,13 +319,13 @@ function App() {
                                     handleSearchMovies={handleSearchMovie}
                                     saveCheckboxState={JSON.parse(localStorage.getItem('saveCheckboxState')) || false}
                                     saveFilmsInputInfo={localStorage.getItem('saveFilmsInputInfo')}
-                                    isError={isError} errorText={errorText} likeMovie={handleLikeMovie}
+                                    isError={isError} errorText={movieErrorText} likeMovie={handleLikeMovie}
                                     deleteMovie={handleDeleteMovie} savedMovies={likedMovies}
                     />
                     <ProtectedRoute path="/saved-movies" component={SavedMovies} loggedIn={loggedIn}
                                     isLoading={isLoading} savedMovies={savedMovies}
                                     deleteMovie={handleDeleteMovie} handleSearch={handleLikedMoviesSearch}
-                                    likedMovies={likedMovies}
+                                    likedMovies={likedMovies} isMovieError={isMovieError}
                     />
                     <ProtectedRoute path="/profile" component={Profile}
                                     onLogout={handleLogout} loggedIn={loggedIn} onUpdateUser={handleUpdateUser}
@@ -315,10 +334,12 @@ function App() {
                                     isReturnInProfile={handleReturnInProfile}/>
 
                     <Route path="/signup">
+                        {loggedIn && <Redirect to="/movies" /> }
                         <Register onRegister={handleRegister} isError={isError} errorText={errorText}
                                   resetErrorText={resetErrorText}/>
                     </Route>
                     <Route path="/signin">
+                        {loggedIn && <Redirect to="/movies" /> }
                         <Login onLogin={handleLogin} isError={isError} errorText={errorText}
                                resetErrorText={resetErrorText}/>
                     </Route>

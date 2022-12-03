@@ -9,6 +9,7 @@ function MoviesCard({movie, liked, likeMovie, deleteMovie, savedMovies}) {
     function handleLikeToggle() {
         if (!liked) {
             likeMovie(movie)
+
         } else {
             const deletedMovie = savedMovies.find((film) => film.movieId === movie.id || movie.movieId)
             deleteMovie(deletedMovie)

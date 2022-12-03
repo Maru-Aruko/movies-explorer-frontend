@@ -55,6 +55,9 @@ function App() {
     const [savedMovies, setSavedMovies] = React.useState([]);
     const [likedMovies, setLikedMovies] = React.useState([])
     const [isLoading, setLoading] = React.useState(false);
+    const [like, setLike] = React.useState([])
+
+
 
     const saveMovies = JSON.parse(localStorage.getItem('savedMovies'))
     const likeMovies = JSON.parse(localStorage.getItem('likedMovies'))
@@ -115,7 +118,7 @@ function App() {
     function getSavedMovies() {
         mainApi.getMovies()
             .then((likedMovies) => {
-                setSavedMovies(likedMovies)
+                setLikedMovies(likedMovies)
                 localStorage.setItem('savedMovies', JSON.stringify(likedMovies))
             })
             .catch((err) => {
@@ -127,6 +130,7 @@ function App() {
         mainApi.addNewMovie(movie)
             .then((likedMovie) => {
                 setLikedMovies([likedMovie, ...likedMovies]);
+                setLike([movie, ...like])
                 console.log("add")
             })
             .catch((err) => {
@@ -139,6 +143,8 @@ function App() {
             .then(() => {
                 const newMovies = savedMovies.filter((film) => film._id !== movie._id);
                 setLikedMovies(newMovies)
+                setLike(newMovies)
+
                 console.log("delete")
             })
             .catch((err) => {
@@ -257,8 +263,7 @@ function App() {
     React.useEffect(() => {
         getUserInfo();
         getSavedMovies()
-        setLikedMovies(saveMovies)
-    }, [loggedIn, location]);
+    }, [loggedIn, like,location]);
 
 
     useEffect(() => {

@@ -19,7 +19,7 @@ function Movies({
             <MoviesCardList
                 likeMovie={likeMovie} deleteMovie={deleteMovie}
                 isLoading={isLoading} isError={isError} errorText={errorText}
-                savedMovies={savedMovies}/>
+                savedMovies={savedMovies} />
         </section>
     );
 }

@@ -41,7 +41,7 @@
     background-color: #4285F4;
     color: #FFFFFF;
     margin: 0;
-    padding: 13px 0 15px;
+    padding: 20px 0 15px;
     border: none;
     border-radius: 3px;
     font-weight: 500;
@@ -123,7 +123,12 @@
 }
 
 .form__buttons-login {
-    margin: 156px 0 70px;
+    margin: 126px 0 70px;
+}
+
+.form__button:disabled {
+    background-color: #F8F8F8;
+    color: #C2C2C2;
 }
 
 @media screen and (max-width: 800px) {
@@ -155,7 +160,7 @@
     }
 
     .form__buttons-login {
-        margin: 245px 0 70px;
+        margin: 215px 0 70px;
     }
 
     .form__question {

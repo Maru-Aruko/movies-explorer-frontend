@@ -1,15 +1,16 @@
 import React from "react";
 
-import likedMovies from '../../../utils/movieLikedList'
-
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function SavedMovies() {
+function SavedMovies( {savedMovies, deleteMovie, likedMovies, handleSearch, isMovieError} ) {
+
     return (
         <section className="saved-movies">
-            <SearchForm />
-            <MoviesCardList movies={likedMovies} moreButton={false} />
+            <SearchForm handleSearchMovies={handleSearch}
+                        saveCheckboxState={false}
+            />
+            <MoviesCardList movies={likedMovies} savedMovies={savedMovies} deleteMovie={deleteMovie} isMovieError={isMovieError} />
         </section>
     )
 }

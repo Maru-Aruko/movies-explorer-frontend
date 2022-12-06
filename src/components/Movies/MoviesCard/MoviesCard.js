@@ -1,28 +1,44 @@
 import React from "react";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import {duration} from "../../../utils/duration";
 
-function MoviesCard ({ movie }) {
+function MoviesCard({movie, liked, likeMovie, deleteMovie, savedMovies}) {
+
     const location = useLocation();
 
-    const [like, setLike] = React.useState(false);
+    function handleLikeToggle() {
+        if (!liked) {
+            likeMovie(movie)
 
-    function handleLikeClick() {
-        setLike(!like);
+        } else {
+            const deletedMovie = savedMovies.find((film) => film.movieId === movie.id || movie.movieId)
+            deleteMovie(deletedMovie)
+        }
+    }
+
+    function handleDeleteClick() {
+        deleteMovie(movie)
     }
 
     return (
         <li className="movie">
             <div className="movie__container">
-                <p className="movie__title">{movie.title}</p>
-                <p className="movie__duration">{movie.duration}</p>
-                    {location.pathname === '/saved-movies' ? (
-                        <button type="button" className="movie__button movie__delete-button" />
-                    ) : (
-                        <button type="button"
-                                className={`movie__button movie__button${like ? '_active' : '_inactive'}`}
-                            onClick={handleLikeClick}/>
-                    )}
-                <img src={movie.img} alt={movie.title} className="movie__img"></img>
+                <p className="movie__title">{movie.nameRU}</p>
+                <p className="movie__duration">{duration(movie)}</p>
+                {location.pathname === "/saved-movies" ?
+                    <button type="button" className="movie__button movie__delete-button"
+                            onClick={handleDeleteClick}/>
+                    :
+                    <button type="button"
+                            className={`movie__button movie__button${liked ? '_active' : '_inactive'}`}
+                            onClick={handleLikeToggle}/>
+                }
+                <a href={movie.trailerLink} className="movie__img-link" target="_blank">
+                    <img className="movie__img"
+                         src={location.pathname === '/saved-movies' ? `${movie.image}` : `https://api.nomoreparties.co${movie.image.url}`}
+                         alt={movie.nameRU}>
+                    </img>
+                </a>
             </div>
         </li>
     );
